@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
@@ -25,6 +25,8 @@ namespace System.Net.Http
         private Version _version;
         private HttpContent _content;
         private bool _disposed;
+
+        // HttpRequestMessage的这个字典属性很重要
         private IDictionary<String, Object> _properties;
 
         public Version Version
@@ -66,6 +68,7 @@ namespace System.Net.Http
             }
         }
 
+        // 请求采用的HTTP方法
         public HttpMethod Method
         {
             get { return _method; }
@@ -112,6 +115,12 @@ namespace System.Net.Http
 
         internal bool HasHeaders => _headers != null;
 
+        /*
+         * HttpRequestMessage的这个字典属性很重要
+         * 1、当前synchronizationContext和HttpConfiguration添加到表示当前请求的HttpRequestMessage对象的属性字典
+         * 2、通过路由系统生成的HttpRouteData也以同样的方式保存在HttpRequestMessage的属性字典之中
+         * 
+         * **/
         public IDictionary<String, Object> Properties
         {
             get
@@ -124,6 +133,8 @@ namespace System.Net.Http
             }
         }
 
+
+        //===========================================构造方法======================================================================
         public HttpRequestMessage()
             : this(HttpMethod.Get, (Uri)null)
         {
@@ -156,6 +167,9 @@ namespace System.Net.Http
 
             if (NetEventSource.IsEnabled) NetEventSource.Exit(this);
         }
+        //===========================================构造方法======================================================================
+
+
 
         public override string ToString()
         {
